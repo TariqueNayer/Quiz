@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+	{% block content %}
+	<h2>Home</h2>
+	<p class="fs-1">SupaQuiz</p>
+	<p class="fs-4">Want to train your brain?</p>
+	<p class="fs-4">Want to challenge yourself to see if you're smarter than a school student?</p>
+	<p class="fs-3">Try the SupaQuiz!</p>
+	<a href="{% url 'quiz_list' %}">Quizzes</a>
+	{% endblock content %}
+</body>
+</html>

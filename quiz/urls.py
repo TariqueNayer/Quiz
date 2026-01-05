@@ -1,0 +1,10 @@
+from django.urls import path
+from .views import HomeView, AboutView, QuizListView, QuizView, QuizResultView
+
+urlpatterns = [
+	path('', HomeView.as_view(), name='home'),
+	path('about/', AboutView.as_view(), name='about'),
+	path('quiz/list/', QuizListView.as_view(), name='quiz_list'),
+	path('quiz/<int:category_id>/', QuizView.as_view(), name='quiz'),
+	path('quiz/result/', QuizResultView.as_view(), name='result')
+]
