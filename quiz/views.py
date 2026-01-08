@@ -1,7 +1,8 @@
 from django.views.generic import ListView, TemplateView, FormView
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Category, Question
+from .models import (Category, Question, UserScore)
 from .forms import CategoryQuizForm
 
 # Create your views here.
@@ -11,14 +12,16 @@ class HomeView(TemplateView):
 class AboutView(TemplateView):
 	template_name = 'quiz/about.html'
 
-class QuizListView(ListView):
+class QuizListView(LoginRequiredMixin, ListView):
 	model = Category
 	context_object_name = 'Category_list'
 	template_name = 'quiz/quiz_list.html'
+	login_url = "account_login"
 
-class QuizView(FormView):
+class QuizView(LoginRequiredMixin, FormView):
 	template_name = "quiz/category_quiz.html"
 	form_class = CategoryQuizForm
+	login_url = "account_login"
 
 	def dispatch(self, request, *args, **kwargs):
 		self.category = get_object_or_404(
@@ -61,11 +64,23 @@ class QuizView(FormView):
 
 			# MCQ question
 			else:
-				if user_answer.lower() == question.answer.lower():
+				if user_answer.strip().lower() == question.answer.strip().lower():
 					score += 1
 
 		self.request.session["score"] = score
 		self.request.session["total"] = total
+
+		# store / update highest score
+		score_obj, created = UserScore.objects.get_or_create(
+			user=self.request.user,
+			category=self.category,
+			defaults={"highest_score": score, "total_questions": total},
+		)
+
+		if not created and score > score_obj.highest_score:
+			score_obj.highest_score = score
+			score_obj.total_questions = total
+			score_obj.save()
 
 		return super().form_valid(form)
 
@@ -73,8 +88,9 @@ class QuizView(FormView):
 	def get_success_url(self):
 		return "/quiz/result/"
 
-class QuizResultView(TemplateView):
+class QuizResultView(LoginRequiredMixin, TemplateView):
 	template_name = "quiz/result.html"
+	login_url = "account_login"
 
 	def get_context_data(self, **kwargs):
 		if "score" not in self.request.session:

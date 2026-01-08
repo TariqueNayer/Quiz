@@ -8,12 +8,28 @@
 </head>
 <body>
 	{% block content %}
-	<div>
 	<h1>Quizzes</h1>
-	{% for Category in Category_list %}
-		<a href="{% url 'quiz' Category.id %}"><h5>{{ Category.name }}</h5>
-	{% endfor %}
-</div>
+	<div>
+		<p class="fst-italic fs-4">Choose a subject.</p>
+	</div>
+
+	<hr>
+	<div class="row">
+		{% for Category in Category_list %}
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card">
+ 					<h5 class="card-header">Subject</h5>
+ 			  	<div class="card-body">
+    				<h5 class="card-title">{{ Category }}</h5>
+   					<p class="card-text">{{ Category.description }} Take a quiz in {{ Category }}.  </p>
+    				<a href="{% url 'quiz' Category.id %}" class="btn btn-primary">Start</a>
+  				</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
 {% endblock content %}
 </body>
 </html>

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}Profile{% endblock title %}</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+	{% if user.username %}
+	<p class="fs-2">{{ user.username }}</p>
+	{% else %}
+	<p class="fs-2">{{ user.email }}</p>
+	{% endif %}
+
+	<p class="fst-italic fs-5">Created on: {{ user.date_joined|date:"F d, Y" }}</p>
+
+	<hr>
+
+	{% if scores %}
+	<p class="fs-3">Score Board</p>
+	<table class="table table-secondary">
+		<tr>
+			<th>Category</th>
+			<th>Highest Score</th>
+			<th>Last Attempt</th>
+		</tr>
+		{% for score in scores %}
+		<tr>
+			<td>{{ score.category.name }}</td>
+			<td>{{ score.highest_score }}</td>
+			<td>{{ score.last_attempted|date:"M d, Y" }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% else %}
+	<p>You haven’t attempted any quizzes yet.</p>
+	{% endif %}
+
+	<form action="{% url 'account_logout' %}" method="post">
+		{% csrf_token %}
+		<button class="btn btn-danger" type="submit">Logout</button>
+	</form>
+</div>
+{% endblock content %}
+</body>
+</html>

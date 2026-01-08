@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (Category, Question)
+from .models import (Category, Question, UserScore)
 
 # Register your models here.
 class QuestionAdmin(admin.ModelAdmin):
@@ -10,3 +10,4 @@ class QuestionAdmin(admin.ModelAdmin):
 	]
 admin.site.register(Category)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(UserScore)

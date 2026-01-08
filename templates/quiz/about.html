@@ -8,11 +8,16 @@
 </head>
 <body>
 	{% block content %}
-	
-	<p class="lh-1">
-		Welcome to SupaQuiz, the home of some of the easiest and hardest quizez in many subjects and fields.
+	<p class="fs-1 fst-italic">About</p>
+	<p class="lh-1 fst-italic">
+		Welcome to SupaQuiz, the home of some of the easiest and hardest quizez in many subjects and fields. This website is completely made in Python. Utilizing the robust backend framework Django. This website is a personal project to showcase my skills to any future clients/employers.
 	</p>
 	
 	{% endblock content %}
+	{% block footer %}
+	<p>I am custom footer</p>
+	<p>2nd line</p>
+	<p>3rd line</p>
+	{% endblock footer %}
 </body>
 </html>
