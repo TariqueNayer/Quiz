@@ -25,12 +25,14 @@
 		<tr>
 			<th>Category</th>
 			<th>Highest Score</th>
+			<th>Total Questions</th>
 			<th>Last Attempt</th>
 		</tr>
 		{% for score in scores %}
 		<tr>
 			<td>{{ score.category.name }}</td>
 			<td>{{ score.highest_score }}</td>
+			<td>{{ score.total_questions }}</td>
 			<td>{{ score.last_attempted|date:"M d, Y" }}</td>
 		</tr>
 		{% endfor %}
@@ -43,6 +45,7 @@
 		{% csrf_token %}
 		<button class="btn btn-danger" type="submit">Logout</button>
 	</form>
+	<a class="btn btn-warning" href="{% url 'password_change' %}">Password Change</a>
 </div>
 {% endblock content %}
 </body>

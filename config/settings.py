@@ -142,8 +142,22 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
 	"django.contrib.auth.backends.ModelBackend",
-	"allauth.account.auth_backends.AuthenticationBackend", # new
+	"allauth.account.auth_backends.AuthenticationBackend", # allauth
 )
+
 LOGIN_REDIRECT_URL = "home"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
+
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATED_METHOD = "email"
+ACCOUNT_UNIQUE_EMAIL = True
+
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
+ACCOUNT_LOGIN_METHODS = {
+    "email"
+}
+ACCOUNT_LOGOUT_ON_GET = False
+
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
