@@ -127,3 +127,6 @@ dmypy.json
 
 .vscode/
 pypi-upload.sh
+
+#custom
+/staticfiles/

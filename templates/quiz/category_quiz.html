@@ -9,7 +9,9 @@
 </head>
 <body>
 	{% block content %}
-	<h1>{{ category.name }} Quiz</h1>
+	<h1 class="h1 fst-italic">{{ category.name }} Quiz</h1>
+
+	<hr>
 
 	<form method="post">
     {% csrf_token %}
@@ -21,7 +23,7 @@
         </div>
     {% endfor %}
 
-    <button type="submit">Submit</button>
+    <button class="btn btn-success" type="submit">Submit</button>
 	</form>
 	{% endblock content %}
 </body>

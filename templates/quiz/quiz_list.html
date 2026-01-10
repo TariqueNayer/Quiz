@@ -17,15 +17,15 @@
 	<div class="row">
 		{% for Category in Category_list %}
 		<div class="col-sm-6">
-			<div class="card">
-				<div class="card">
- 					<h5 class="card-header">Subject</h5>
+			<div class="card h-100 shadow-sm border-0 bg-light bg-gradient ">
+				<div class="card-header bg-primary bg-gradient text-dark p-2 fw-bold">
+ 					Subject
+ 				</div>
  			  	<div class="card-body">
-    				<h5 class="card-title">{{ Category }}</h5>
-   					<p class="card-text">{{ Category.description }} Take a quiz in {{ Category }}.  </p>
+    				<h5 class="card-title text-dark">{{ Category }}</h5>
+   					<p class="card-text text-muted">{{ Category.description }} Take a quiz in {{ Category }}.  </p>
     				<a href="{% url 'quiz' Category.id %}" class="btn btn-primary">Start</a>
   				</div>
-				</div>
 			</div>
 		</div>
 		{% endfor %}
