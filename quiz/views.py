@@ -1,6 +1,7 @@
 from django.views.generic import ListView, TemplateView, FormView
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 from .models import (Category, Question, UserScore)
 from .forms import CategoryQuizForm
@@ -101,3 +102,13 @@ class QuizResultView(LoginRequiredMixin, TemplateView):
 			context["total"] = self.request.session.get("total")
 			context["category"] = self.request.session.get("category")
 			return context
+
+class SearchCategoryView(LoginRequiredMixin, ListView):
+	model = Category
+	template_name = 'quiz/quiz_list.html'
+	context_object_name = 'Category_list'
+	login_url = "account_login"
+
+	def get_queryset(self):
+		query = self.request.GET.get('q')
+		return Category.objects.filter( Q(name__icontains=query) | Q(description__icontains=query) )

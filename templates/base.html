@@ -17,7 +17,7 @@
 	<main class="flex-shrink-0">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="{% url 'home' %}">  <img src="{% static 'images/logo.jpg' %}" alt="" width="60" height="55" class="d-inline-block align-text-bottom"></a>
+			<a class="navbar-brand" href="{% url 'home' %}">  <img src="{% static 'images/logo.jpg' %}" alt="" width="60" height="55" class="d-inline-block align-text-bottom"> </a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -39,15 +39,18 @@
 					{% endif %}
 					
 				</ul>
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class='nav-item'>{% block searchbar %}{% endblock searchbar %}</li>
+				</ul>
 				<ul class="navbar-nav nav-tabs">
 					
 
 					{% if user.is_authenticated %}
 					<li class='nav-item p-30"'>
 					{% if user.username %}
-						<a class="nav-link active  bg-dark" aria-current="page" href="{% url 'profile' %}">{{ user.username }}</a>
+						<a class="nav-link active  bg-dark" aria-current="page" href="{% url 'profile' %}"> {{ user.username }}</a>
 						{% else %}
-						<a class="nav-link active bg-dark" aria-current="page"  href="{% url 'profile' %}">{{ user.email }}</a>
+						<a class="nav-link active bg-dark" aria-current="page"  href="{% url 'profile' %}"> {{ user.email }}</a>
 					{% endif %}
 					</li>
 					{% endif %}
