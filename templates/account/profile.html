@@ -14,13 +14,22 @@
 
 	<p class="fst-italic fs-5">Created on: {{ user.date_joined|date:"F d, Y" }}</p>
 
-	<p class="fst-italic fs-5">Email: {{ user.email }}</p>
-
-	{% if not user.emailaddress_set.first.verified %}
-    <span class="badge bg-warning text-dark">(Unverified)</span>
-    {% else %}
-    <span class="badge bg-info text-dark">(Varified)</span>
-  	{% endif %}
+	<p class="d-inline-flex gap-1 fst-italic fs-5 "><a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Email</a></p>
+	<div class="collapse" id="collapseExample">
+  		<div class="card card-body mb3">
+  		<h6 class="mb3">
+    	{{ user.email }}
+    	
+		{% if not user.emailaddress_set.first.verified %}
+	    <span class="badge bg-warning text-dark">(Unverified)</span>
+	    {% else %}
+	    <span class="badge bg-info text-dark">(Varified)</span>
+	  	{% endif %}
+	  	</h6>
+  		</div>
+	</div>
+		
+  	
 	<hr>
 
 	{% if scores %}

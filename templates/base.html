@@ -67,11 +67,24 @@
 	</main>
 
 
-	<footer class="mt-auto py-3 bg-dark text-secondary">
-		<div class="container">
-			{% block footer %}
-			<p>i am basic footer.</p>
-			{% endblock footer %}
+	<footer class="mt-auto py-3 bg-dark text-white">
+		<div class="container d-flex">
+			
+			<div class="row">
+				<div class="col border-end">
+					<img src="{% static 'images/logo.jpg' %}" alt="" width="60" height="55" class="d-inline-block align-text-bottom" style="filter: grayscale(80%);">
+					<hr>
+					<a class="text-muted" href="{% url 'home' %}">Home</a>
+					<a class="text-muted" href="{% url 'about' %}">About</a>
+				</div>
+				<div class="col-8">
+					{% block footer %}
+					<p class="fst-italic">Created by : Tarique Nayer Faraz</p>
+					<p class="fst-italic h6">contact me</p>
+					<p class="fst-italic">...</p>
+					{% endblock footer %}
+				</div>
+  			</div>
 		</div>
 	</footer>
 </body>

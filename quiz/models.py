@@ -23,11 +23,11 @@ class Category(models.Model):
 
 class Question(models.Model):
 	text = models.CharField(max_length=500)
-	answer = models.TextField()
-	option_a = models.TextField(blank=True)
-	option_b = models.TextField(blank=True)
-	option_c = models.TextField(blank=True)
-	option_d = models.TextField(blank=True)
+	answer = models.CharField(max_length=500)
+	option_a = models.CharField(max_length=500, blank=True)
+	option_b = models.CharField(max_length=500,blank=True)
+	option_c = models.CharField(max_length=500,blank=True)
+	option_d = models.CharField(max_length=500,blank=True)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 	def __str__(self):

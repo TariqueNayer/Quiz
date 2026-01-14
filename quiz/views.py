@@ -1,5 +1,5 @@
 from django.views.generic import ListView, TemplateView, FormView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
@@ -45,12 +45,14 @@ class QuizView(LoginRequiredMixin, FormView):
 	def form_valid(self, form):
 		score = 0
 		total = 0
+		results = []
 
 		for field_name, user_answer in form.cleaned_data.items():
 			question_id = field_name.split("_")[1]
 			question = Question.objects.get(id=question_id)
 
 			total += 1
+			
 
 			# subjective question
 			if not any([
@@ -62,14 +64,27 @@ class QuizView(LoginRequiredMixin, FormView):
 				# simple comparison 
 				if user_answer.strip().lower() == question.answer.strip().lower():
 					score += 1
+					is_correct = True
+				else: is_correct = False
 
 			# MCQ question
 			else:
 				if user_answer.strip().lower() == question.answer.strip().lower():
 					score += 1
+					is_correct = True
+				else: is_correct = False
+
+			results.append({
+				"id" : question_id,
+				"question": question.text,
+				"user_answer": user_answer,
+				
+				"is_correct": is_correct,
+			})
 
 		self.request.session["score"] = score
 		self.request.session["total"] = total
+		self.request.session["results"] = results
 
 		# store / update highest score
 		score_obj, created = UserScore.objects.get_or_create(
@@ -93,15 +108,21 @@ class QuizResultView(LoginRequiredMixin, TemplateView):
 	template_name = "quiz/result.html"
 	login_url = "account_login"
 
+	def dispatch(self, request, *args, **kwargs):
+		if "score" not in request.session:
+			return redirect("quiz_list")
+		return super().dispatch(request, *args, **kwargs)
+
 	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
 		if "score" not in self.request.session:
-			return redirect("category_list")
-		else:
-			context = super().get_context_data(**kwargs)
-			context["score"] = self.request.session.get("score")
-			context["total"] = self.request.session.get("total")
-			context["category"] = self.request.session.get("category")
 			return context
+		context["score"] = self.request.session.get("score")
+		context["total"] = self.request.session.get("total")
+		context["half_total"] = self.request.session.get("total") / 2
+		context["category"] = self.request.session.get("category")
+		context["results"] = self.request.session["results"]
+		return context
 
 class SearchCategoryView(LoginRequiredMixin, ListView):
 	model = Category

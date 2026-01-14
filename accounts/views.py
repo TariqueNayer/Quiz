@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 
 class ProfileView(LoginRequiredMixin, TemplateView):
 	template_name = "account/profile.html"
+	login_url = "account_login"
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -20,6 +21,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 		return context
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+	login_url = "account_login"
 	# This will be the landing page after a successful change
 	def get_success_url(self):
 		# Setting a flag in the session that expires quickly
@@ -28,6 +30,7 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 
 class PasswordChangeDone(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 	template_name = 'account/password_change_done.html'
+	login_url = "account_login"
 
 	def test_func(self):
 		# Only allow access if this session flag exists

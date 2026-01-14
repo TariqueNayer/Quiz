@@ -174,3 +174,28 @@ ACCOUNT_LOGOUT_ON_GET = False
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# cookies
+CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE", default=True)
+SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=True)
+
+# for HTTPS (SSL).
+SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
+
+SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=2592000)  # 30 days
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
+    "SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True
+)
+SECURE_HSTS_PRELOAD = env.bool("SECURE_HSTS_PRELOAD", default=True)
+
+# caching
+if DEBUG == False:
+    MIDDLEWARE.insert(
+        0, "django.middleware.cache.UpdateCacheMiddleware"
+    )  # django cache framework. Update cache middleware.
+    MIDDLEWARE.append(
+        "django.middleware.cache.FetchFromCacheMiddleware"
+    )  # dcf. Fetch Cache middleware.
+    # for pre-site-cache.
+    CACHE_MIDDLEWARE_ALIAS = "default"
+    CACHE_MIDDLEWARE_SECONDS = 604800
+    CACHE_MIDDLEWARE_KEY_PREFIX = ""

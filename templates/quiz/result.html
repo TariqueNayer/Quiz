@@ -7,12 +7,38 @@
 	<title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
+
 	{% block content %}
-		{% if score is not None %}
-  	<p>Your Score: {{ score }} / {{ total }}</p>
-		{% else %}
-  	<p>Please attempt the quiz first.</p>
+		<h1>Results</h1>
+		{% if score == total %}
+			<p class=" fs-3">Best of the best.</p>
+		{% elif score < total and score >= half_total %}
+			<p class="fs-3 ">You can do better</p>
+		{% elif score < total and score < half_total %}
+			<p class="fs-3 text-danger ">You Failed</p>
 		{% endif %}
+		<p class="fs-5 text-bold">Your Score: {{ score }} / {{ total }}</p>
+		<hr>
+		
+		{% for result in results %}
+		
+			<div class="card h-100 shadow-sm border-0 bg-transparent ">
+				<div class="card-header p-2 fw-bold">
+					Question {{ result.id }}
+				</div>
+				<div class="card-body">
+					<p class="card-title text-dark">Question : {{ result.question }}</p>
+
+					<p class="card-text">Your answer : {{ result.user_answer }}</p>
+					
+					<p class="card-text">{% if result.is_correct %}<span class="badge bg-success text-white">correct</span>{% else %}<span class="badge bg-danger text-white">incorrect</span>{% endif %}</p>
+				</div>
+			</div>
+		
+		{% endfor %}
+		
+ 		
+			
 	{% endblock content %}
 </body>
 </html>
