@@ -8,6 +8,8 @@ django-cache-url==3.4.5
 django-crispy-forms==2.5
 environs==14.5.0
 marshmallow==4.2.0
+psycopg==3.3.2
+psycopg-binary==3.3.2
 python-dotenv==1.2.1
 sqlparse==0.5.5
 tzdata==2025.3

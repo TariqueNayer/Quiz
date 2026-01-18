@@ -1,9 +1,10 @@
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve
-
+from django.contrib.auth import get_user_model
 from .views import HomeView, AboutView
 from quiz.models import Category, Question
 
+User = get_user_model()
 # Create your tests here.
 class HomePageTests(SimpleTestCase):
 	def setUp(self):
@@ -20,7 +21,7 @@ class HomePageTests(SimpleTestCase):
 		self.assertContains(self.response, 'Home')
 
 	def test_template_does_not_contains_incorrect_html(self):
-		self.assertNotContains(self.response, 'About')
+		self.assertNotContains(self.response, 'Score_Board')
 
 	def test_homepage_url_resolves_homepageview(self):
 		view = resolve("/")
@@ -41,7 +42,7 @@ class AboutPageTests(SimpleTestCase):
 		self.assertContains(self.response, 'About')
 
 	def test_template_does_not_contains_incorrect_html(self):
-		self.assertNotContains(self.response, 'Home')
+		self.assertNotContains(self.response, 'Score_Board')
 
 	def test_homepage_url_resolves_homepageview(self):
 		view = resolve("/about/")
@@ -49,6 +50,14 @@ class AboutPageTests(SimpleTestCase):
 
 class QuizListViewTest(TestCase):
 	def setUp(self):
+		
+		self.user = User.objects.create_user(
+			username="testuser",
+			password="testpass123"
+		)
+		self.client.login(username="testuser", password="testpass123")
+
+		
 		self.category1 = Category.objects.create(name="Python")
 		self.category2 = Category.objects.create(name="Django")
 
@@ -64,8 +73,17 @@ class QuizListViewTest(TestCase):
 		response = self.client.get(reverse("quiz_list"))
 		self.assertIn("Category_list", response.context)
 
+
+# QuizView Tests. -------------------
+
 class QuizViewGETTest(TestCase):
 	def setUp(self):
+		self.user = User.objects.create_user(
+			username="testuser",
+			password="testpass123"
+		)
+		self.client.login(username="testuser", password="testpass123")
+
 		self.category = Category.objects.create(name="Python")
 
 		self.question = Question.objects.create(
@@ -88,6 +106,12 @@ class QuizViewGETTest(TestCase):
 
 class QuizViewPOSTTest(TestCase):
 	def setUp(self):
+		self.user = User.objects.create_user(
+			username="testuser",
+			password="testpass123"
+		)
+		self.client.login(username="testuser", password="testpass123")
+
 		self.category = Category.objects.create(name="Python")
 
 		self.question = Question.objects.create(
@@ -99,6 +123,7 @@ class QuizViewPOSTTest(TestCase):
 			option_c="",
 			option_d=""
 		)
+		
 
 	def test_quiz_view_post_subjective_correct_answer(self):
 		post_data = {
@@ -111,6 +136,7 @@ class QuizViewPOSTTest(TestCase):
 			follow=True
 		)
 
+		
 		session = self.client.session
 		self.assertEqual(session["score"], 1)
 		self.assertEqual(session["total"], 1)
@@ -127,7 +153,9 @@ class QuizViewPOSTTest(TestCase):
 		)
 
 		post_data = {
-			f"question_{mcq.id}": "a"
+			f"question_{self.question.id}": "language",
+			f"question_{mcq.id}": "a",
+
 		}
 
 		response = self.client.post(
@@ -137,6 +165,6 @@ class QuizViewPOSTTest(TestCase):
 		)
 
 		session = self.client.session
-		self.assertEqual(session["score"], 1)
-		self.assertEqual(session["total"], 1)
+		self.assertEqual(session["score"], 2)
+		self.assertEqual(session["total"], 2)
 
