@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from environs import Env
+from urllib.parse import urlparse, parse_qsl
 
 env = Env()
 env.read_env()
@@ -29,7 +30,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -91,23 +92,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-#tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 
+#DATABASES = {'default': env.dj_db_url("DATABASE_URL")} # Uccomment this line for local development.
+
+# Commant this for local dev.
 DATABASES = {
-	'default': env.dj_db_url("DATABASE_URL")
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
+        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+    }
 }
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': tmpPostgres.path.replace('/', ''),
-#        'USER': tmpPostgres.username,
-#        'PASSWORD': tmpPostgres.password,
-#        'HOST': tmpPostgres.hostname,
-#        'PORT': 5432,
-#        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
-#    }
-#}
 
 
 # Password validation
