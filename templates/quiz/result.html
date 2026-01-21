@@ -17,21 +17,28 @@
 		{% elif score < total and score < half_total %}
 			<p class="fs-3 text-danger ">You Failed</p>
 		{% endif %}
-		<p class="fs-5 text-bold">Your Score: {{ score }} / {{ total }}</p>
+		<p class="fs-5 fw-bold">Your Score: {{ score }} / {{ total }}</p>
 		<hr>
 		
 		{% for result in results %}
 		
 			<div class="card h-100 shadow-sm border-0 bg-transparent ">
 				<div class="card-header p-2 fw-bold">
-					Question {{ result.id }}
+					Question {{ forloop.counter }}
 				</div>
 				<div class="card-body">
 					<p class="card-title text-dark">Question : {{ result.question }}</p>
 
 					<p class="card-text">Your answer : {{ result.user_answer }}</p>
 					
-					<p class="card-text">{% if result.is_correct %}<span class="badge bg-success text-white">correct</span>{% else %}<span class="badge bg-danger text-white">incorrect</span>{% endif %}</p>
+					<p class="card-text">
+						{% if result.is_correct %}
+						<span class="badge bg-success text-white">correct</span>
+						{% else %}
+						<span class="badge bg-danger text-white">incorrect</span>
+						<hr>
+						<p class="fw-bold">Correct Answer: {{ result.correct_answer }} </p>
+					{% endif %}</p>
 				</div>
 			</div>
 		

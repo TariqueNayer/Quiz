@@ -96,8 +96,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
 	"default": env.dj_db_url(
-		"DATABASE_URL", 
-		ssl_require=not env.bool("DEBUG", default=False)
+		"DATABASE_URL"
 	)
 }
 

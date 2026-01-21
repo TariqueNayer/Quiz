@@ -78,7 +78,7 @@ class QuizView(LoginRequiredMixin, FormView):
 				"id" : question_id,
 				"question": question.text,
 				"user_answer": user_answer,
-				
+				"correct_answer": question.answer,
 				"is_correct": is_correct,
 			})
 
