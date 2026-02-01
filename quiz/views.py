@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 
 from django.db.models import Q
 
@@ -12,22 +13,24 @@ from .models import (Category, Question, UserScore)
 from .forms import CategoryQuizForm
 
 # Create your views here.
-@method_decorator(cache_page(3600), 'dispatch')
+@method_decorator(vary_on_cookie, name='dispatch')
+@method_decorator(cache_page(60), 'dispatch')
 class HomeView(TemplateView):
 	template_name = 'quiz/home.html'
 
-@method_decorator(cache_page(3600), 'dispatch')
+@method_decorator(vary_on_cookie, name='dispatch')
+@method_decorator(cache_page(60), 'dispatch')
 class AboutView(TemplateView):
 	template_name = 'quiz/about.html'
-
-@method_decorator(cache_page(600), 'dispatch')
+@method_decorator(vary_on_cookie, name='dispatch')
+@method_decorator(cache_page(60), 'dispatch')
 class QuizListView(LoginRequiredMixin, ListView):
 	model = Category
 	context_object_name = 'Category_list'
 	template_name = 'quiz/quiz_list.html'
 	login_url = "account_login"
 	
-
+@method_decorator(vary_on_cookie, name='dispatch')
 @method_decorator(cache_page(60), 'dispatch')
 class QuizView(LoginRequiredMixin, FormView):
 	template_name = "quiz/category_quiz.html"

@@ -7,11 +7,14 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
 from django.core.cache import cache
+from django.views.decorators.cache import never_cache
+from django.utils.decorators import method_decorator
 
 from quiz.models import UserScore
 
 # Create your views here.
 
+@method_decorator(never_cache, name='dispatch')
 class ProfileView(LoginRequiredMixin, TemplateView):
 	template_name = "account/profile.html"
 	login_url = "account_login"
@@ -25,7 +28,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 		if scores is None:
 			
-			scores = (UserScore.objects.filter(user=self.request.user).select_related("category"))
+			scores = (UserScore.objects.filter(user=user).select_related("category"))
 			cache.set(cache_key, scores, 300)
 
 		context["scores"] = scores

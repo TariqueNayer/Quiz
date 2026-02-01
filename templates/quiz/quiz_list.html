@@ -6,6 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}{% if request.resolver_match.url_name == 'search_results' %}Search Results{% else %}Quizzes{% endif %}{% endblock title %}</title>
 </head>
+
+{% block body_class %}quizzes-page{% endblock %}
+
 <body>
 	{% block searchbar %}
 	<div class="mx-auto bg-transparent" style="width: 500px; background-color: lightgray;">
@@ -27,14 +30,14 @@
 	<div class="row">
 		{% for Category in Category_list %}
 		<div class="col-sm-6">
-			<div class="card h-100 shadow-sm border-0 bg-light bg-gradient ">
+			<div class="card h-100 shadow-sm border-0 bg-transparent">
 				<div class="card-header bg-dark bg-gradient text-white p-2 fw-bold">
 					Subject
 				</div>
-				<div class="card-body">
+				<div class="card-body bg-opacity-50">
 					<h5 class="card-title text-dark">{{ Category }}</h5>
-					<p class="card-text text-muted">{{ Category.description }} Take a quiz in {{ Category }}.  </p>
-					<a href="{% url 'quiz' Category.id %}" class="btn btn-outline-primary">Start</a>
+					<p class="card-text ">{{ Category.description }} Take a quiz in {{ Category }}.  </p>
+					<a href="{% url 'quiz' Category.id %}" class="btn btn-primary">Start</a>
 				</div>
 			</div>
 		</div>

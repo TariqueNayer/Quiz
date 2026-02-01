@@ -6,18 +6,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}Home{% endblock title %}</title>
 </head>
+{% block body_class %}home-page{% endblock %}
+
 <body>
 	{% block content %}
-	<p class="h1 text-left">Knowledge Quest</p>
-	<hr>
-	<p class="fs-4">Want to train your brain?</p>
-	<p class="fs-4">Want to challenge yourself to see if you're as smart as you think?</p>
-	<p class="fs-3">Try the our quizzes here at Knowledge Quest</p>
-	{% if user.is_authenticated %}
-	<a class="btn btn-outline-dark btn-lg" href="{% url 'quiz_list' %}">Start a Quiz!</a>
-	{% else %}
-	<a class="btn btn-success btn-lg" href="{% url 'account_signup' %}">Sign Up Now!</a>
-	{% endif %}
-	{% endblock content %}
+	<div class="container text-center">
+		<p class="fw-bolder fs-1">Knowledge Quest</p>
+		<hr>
+		<p class="fs-4 fw-bold">Want to train your brain?</p>
+		<p class="fs-4 fw-bold">Want to challenge yourself to see if you're as smart as you think?</p>
+		<p class="fs-3 fw-bold">Try the our quizzes here at Knowledge Quest</p>
+		{% if user.is_authenticated %}
+		<a class="btn btn-dark btn-lg fw-bold" href="{% url 'quiz_list' %}">Start a Quiz!</a>
+		{% else %}
+		<a class="btn btn-success btn-lg fw-bold" href="{% url 'account_signup' %}">Sign Up Now!</a>
+		{% endif %}
+		{% endblock content %}
+	</div>
 </body>
 </html>

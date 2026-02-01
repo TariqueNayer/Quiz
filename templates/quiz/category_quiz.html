@@ -7,6 +7,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}{% endblock title %}</title>
 </head>
+
+{% block body_class %}quizzes-page{% endblock %}
+
 <body>
 	{% block content %}
 	<h1 class="h1 fst-italic">{{ category.name }} Quiz</h1>
